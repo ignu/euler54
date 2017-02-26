@@ -1,5 +1,7 @@
 import R from 'ramda'
 
+const HAND_SIZE = 5
+
 const orders = {
   'T' : 10,
   'J' : 11,
@@ -20,7 +22,7 @@ const getCard = (card) => {
 }
 
 const parseLine = R.compose(
-  R.splitAt(5),
+  R.splitAt(HAND_SIZE),
   R.map(getCard),
   R.split(' ')
 )
