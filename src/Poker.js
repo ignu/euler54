@@ -19,15 +19,11 @@ const getCard = (card) => {
   }
 }
 
-const parseLine = (line) => {
-  const cardStrings = line.split(' ')
-  const cards = R.map(getCard)(cardStrings)
-
-  return [
-      [cards[0], cards[1], cards[2], cards[3], cards[4]],
-      [cards[5], cards[6], cards[7], cards[8], cards[9]]
-    ]
-}
+const parseLine = R.compose(
+  R.splitAt(5),
+  R.map(getCard),
+  R.split(' ')
+)
 
 const royalFlushRanker = {
   rankOrder: 10,
