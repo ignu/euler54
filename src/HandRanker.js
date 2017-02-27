@@ -81,6 +81,19 @@ const fullHouseRanker = (hand) => {
   }
 }
 
+const fourOfAKindRanker = (hand) => {
+  const groups = R.values(groupOrder(hand))
+
+  const match = R.find(g => g.length === 4)(groups)
+
+  if (!match) return undefined
+
+  return {
+    type: 'fullHouse',
+    rankOrder: getRankOrder('fourOfAKind', match)
+  }
+}
+
 const highCardRanker = (hand) => {
   return {
     type: 'highCard',
@@ -92,6 +105,7 @@ export default {
   handRanks,
   highCard : highCardRanker,
   flush: flushRanker,
+  fourOfAKind: fourOfAKindRanker,
   straight: straightRanker,
   fullHouse: fullHouseRanker,
   straightFlush: straightFlushRanker

@@ -59,6 +59,28 @@ describe("straightRanker", () => {
   });
 })
 
+
+describe("fourOfAKindRanker", () => {
+  it("returns rank when four of a kind", () => {
+    const line = '8C 8S 8H 8C 9S'
+    const hand = parser.parseLine(line)[0]
+
+    const rank = ranker.fourOfAKind(hand)
+
+    expect(rank).toBeTruthy()
+    expect(rank.rankOrder).toEqual(708)
+  })
+
+  it("returns falsy when not four of a kind", () => {
+    const line = '8C 8S 7C 6H 5S'
+    const hand = parser.parseLine(line)[0]
+
+    const rank = ranker.fourOfAKind(hand)
+
+    expect(rank).toBeFalsy()
+  })
+})
+
 describe("fullHouseRanker", () => {
   it("returns rank when a full house", () => {
     const line = '8C 8S 8H 9H 9S'
