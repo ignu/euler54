@@ -3,6 +3,8 @@ import R from 'ramda'
 // we don't need a royal flush ranker. getRankOrder of straightFlush will order royalFlushes correctly
 const handRanks = ['highCard', 'pair', 'twoPair', 'threeOfAKind', 'straight', 'flush', 'fullHouse', 'fourOfAKind', 'straightFlush']
 
+const groupOrder = R.groupBy(R.prop('order'))
+
 const largetCard = (cards) => {
   let maxCard = {order: 0}
 
@@ -29,6 +31,11 @@ const isStraight = (hand) => {
 
 const getRankOrder = (type, hand) => {
   return handRanks.indexOf(type) * 100 + largetCard(hand).order
+}
+
+// for twpPair, fullHouse our rankOrder needs two values
+const getRankOrderForGroup = (type, group) => {
+  return handRanks.indexOf(type) * 100 + parseInt(R.max(...group)) + (parseInt(R.min(...group)) / 100)
 }
 
 const straightFlushRanker = (hand) => {
@@ -63,6 +70,17 @@ const flushRanker = (hand) => {
   }
 }
 
+const fullHouseRanker = (hand) => {
+  const groups = groupOrder(hand)
+  const keys = R.keys(groups)
+  if (keys.length !== 2) return undefined
+
+  return {
+    type: 'fullHouse',
+    rankOrder: getRankOrderForGroup('fullHouse', keys)
+  }
+}
+
 const highCardRanker = (hand) => {
   return {
     type: 'highCard',
@@ -75,5 +93,6 @@ export default {
   highCard : highCardRanker,
   flush: flushRanker,
   straight: straightRanker,
+  fullHouse: fullHouseRanker,
   straightFlush: straightFlushRanker
 }

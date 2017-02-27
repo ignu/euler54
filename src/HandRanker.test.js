@@ -59,6 +59,29 @@ describe("straightRanker", () => {
   });
 })
 
+describe("fullHouseRanker", () => {
+  it("returns rank when a full house", () => {
+    const line = '8C 8S 8H 9H 9S'
+    const hand = parser.parseLine(line)[0]
+
+    const rank = ranker.fullHouse(hand)
+
+    expect(rank).toBeTruthy()
+    expect(rank.rankOrder).toEqual(609.08)
+  });
+
+
+  it("is falsey when not a straight flush", () => {
+    const line = '7C TC 9C 8C 3C'
+    const hand = parser.parseLine(line)[0]
+
+    const rank = ranker.fullHouse(hand)
+
+    expect(rank).toBeFalsy()
+  })
+
+})
+
 describe("straightFlushRanker", () => {
   it("returns rank when there's a royal flush", () => {
     const line = '7C TC 9C 8C 6C'
