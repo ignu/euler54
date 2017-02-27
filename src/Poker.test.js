@@ -40,7 +40,6 @@ it('handValue returns the first truthy value', () => {
   expect(poker.handValue(hand, checkers)).toEqual(1)
 })
 
-
 it("can get win count", () => {
   expect(poker.getWinCount()).toEqual(376)
 })
