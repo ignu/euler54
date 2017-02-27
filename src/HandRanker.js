@@ -25,33 +25,27 @@ const isStraight = (hand) => {
   return orderedHand[0].order - orderedHand[4].order == 4
 }
 
-const royalFlushRanker = {
-  check: (hand) => {
-    return isFlush(hand) && largetCard(hand).order == "14"
-  }
+const royalFlushRanker = (hand) => {
+  return isFlush(hand) && largetCard(hand).order == "14"
 }
 
 const getRankOrder = (type, hand) => {
   return handRanks.indexOf(type) * 100 + largetCard(hand).order
 }
 
-const straightRanker = {
-  check: (hand) => {
-    if(!isStraight(hand)) return undefined
+const straightRanker = (hand) => {
+  if(!isStraight(hand)) return undefined
 
-    return {
-      type: 'straight',
-      rankOrder: getRankOrder('straight', hand)
-    }
+  return {
+    type: 'straight',
+    rankOrder: getRankOrder('straight', hand)
   }
 }
 
-const highCardRanker = {
-  check: (hand) => {
-    return {
-      type: 'highCard',
-      rankOrder: getRankOrder('highCard', hand)
-    }
+const highCardRanker = (hand) => {
+  return {
+    type: 'highCard',
+    rankOrder: getRankOrder('highCard', hand)
   }
 }
 
@@ -63,7 +57,7 @@ const handCheckers = [
 
 export default {
   handCheckers,
-  highCard : highCardRanker.check,
-  straight: straightRanker.check,
-  royalFlush: royalFlushRanker.check
+  highCard : highCardRanker,
+  straight: straightRanker,
+  royalFlush: royalFlushRanker
 }
