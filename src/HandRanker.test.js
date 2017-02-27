@@ -53,28 +53,39 @@ describe("straightRanker", () => {
     const line = '8C 8S 7C 6H 5S'
     const hand = parser.parseLine(line)[0]
 
-    const rank = ranker.royalFlush(hand)
+    const rank = ranker.straightFlush(hand)
 
     expect(rank).toBeFalsy()
   });
 })
 
-
-describe("royalFlushRanker", () => {
-  xit("returns rank when there's a royal flush", () => {
-    const line = '8C TS KC 9H 4S'
+describe("straightFlushRanker", () => {
+  it("returns rank when there's a royal flush", () => {
+    const line = '7C TC 9C 8C 6C'
     const hand = parser.parseLine(line)[0]
 
-    const rank = ranker.royalFlush(hand)
+    const rank = ranker.straightFlush(hand)
 
     expect(rank).toBeTruthy()
+    expect(rank.rankOrder).toEqual(810)
+    expect(rank.type).toEqual('straightFlush')
   })
 
-  it("is falsey when not a royal flush", () => {
-    const line = '8C TS KC 9H 4S'
+  it('changes type for a royal flush', () => {
+    const line = 'AS KS QS JS TS'
     const hand = parser.parseLine(line)[0]
 
-    const rank = ranker.royalFlush(hand)
+    const rank = ranker.straightFlush(hand)
+
+    expect(rank.type).toEqual('royalFlush')
+  })
+
+
+  it("is falsey when not a straight flush", () => {
+    const line = '7C TC 9C 8C 3C'
+    const hand = parser.parseLine(line)[0]
+
+    const rank = ranker.straightFlush(hand)
 
     expect(rank).toBeFalsy()
   })

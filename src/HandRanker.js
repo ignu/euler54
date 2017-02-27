@@ -1,6 +1,7 @@
 import R from 'ramda'
 
-const handRanks = ['highCard', 'pair', 'twoPair', 'threeOfAKind', 'straight', 'flush', 'fullHouse', 'fourOfAKind', 'straightFlush', 'royalFlush']
+// we don't need a royal flush ranker. getRankOrder of straightFlush will order royalFlushes correctly
+const handRanks = ['highCard', 'pair', 'twoPair', 'threeOfAKind', 'straight', 'flush', 'fullHouse', 'fourOfAKind', 'straightFlush']
 
 const largetCard = (cards) => {
   let maxCard = {order: 0}
@@ -25,12 +26,23 @@ const isStraight = (hand) => {
   return orderedHand[0].order - orderedHand[4].order == 4
 }
 
-const royalFlushRanker = (hand) => {
-  return isFlush(hand) && largetCard(hand).order == "14"
-}
 
 const getRankOrder = (type, hand) => {
   return handRanks.indexOf(type) * 100 + largetCard(hand).order
+}
+
+const straightFlushRanker = (hand) => {
+  if(!isStraight(hand)) return undefined
+  if(!isFlush(hand)) return undefined
+
+  const rankOrder = getRankOrder('straightFlush', hand)
+  const royalFlushRank = 814
+
+  return {
+    type: 'straightFlush',
+    rankOrder: rankOrder,
+    type: rankOrder == royalFlushRank ? 'royalFlush' : 'straightFlush'
+  }
 }
 
 const straightRanker = (hand) => {
@@ -58,16 +70,10 @@ const highCardRanker = (hand) => {
   }
 }
 
-const handCheckers = [
-  royalFlushRanker,
-  straightRanker,
-  highCardRanker
-]
-
 export default {
-  handCheckers,
+  handRanks,
   highCard : highCardRanker,
   flush: flushRanker,
   straight: straightRanker,
-  royalFlush: royalFlushRanker
+  straightFlush: straightFlushRanker
 }
