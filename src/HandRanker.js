@@ -1,7 +1,17 @@
 import R from 'ramda'
 
 // we don't need a royal flush ranker. getRankOrder of straightFlush will order royalFlushes correctly
-const handRanks = ['highCard', 'pair', 'twoPair', 'threeOfAKind', 'straight', 'flush', 'fullHouse', 'fourOfAKind', 'straightFlush']
+const handRanks = [
+  'highCard',
+  'pair',
+  'twoPair',
+  'threeOfAKind',
+  'straight',
+  'flush',
+  'fullHouse',
+  'fourOfAKind',
+  'straightFlush'
+]
 
 const groupOrder = R.groupBy(R.prop('order'))
 
@@ -27,7 +37,6 @@ const isStraight = (hand) => {
   const orderedHand = R.reverse(R.sortBy(R.prop('order'))(hand))
   return orderedHand[0].order - orderedHand[4].order == 4
 }
-
 
 const getRankOrder = (type, hand) => {
   return handRanks.indexOf(type) * 100 + largetCard(hand).order
@@ -81,18 +90,25 @@ const fullHouseRanker = (hand) => {
   }
 }
 
-const fourOfAKindRanker = (hand) => {
-  const groups = R.values(groupOrder(hand))
+const getNumberRanker = (type, number) => {
+  return (hand) => {
+    const groups = R.values(groupOrder(hand))
 
-  const match = R.find(g => g.length === 4)(groups)
+    const match = R.find(g => g.length === number)(groups)
 
-  if (!match) return undefined
+    if (!match) return undefined
 
-  return {
-    type: 'fullHouse',
-    rankOrder: getRankOrder('fourOfAKind', match)
+    return {
+      type,
+      rankOrder: getRankOrder(type, match)
+    }
   }
 }
+
+
+const pairRanker  = getNumberRanker('pair', 2)
+const threeOfAKindRanker = getNumberRanker('threeOfAKind', 3)
+const fourOfAKindRanker  = getNumberRanker('fourOfAKind', 4)
 
 const highCardRanker = (hand) => {
   return {
@@ -105,6 +121,8 @@ export default {
   handRanks,
   highCard : highCardRanker,
   flush: flushRanker,
+  pair: pairRanker,
+  threeOfAKind: threeOfAKindRanker,
   fourOfAKind: fourOfAKindRanker,
   straight: straightRanker,
   fullHouse: fullHouseRanker,
