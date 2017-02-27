@@ -10,6 +10,7 @@ describe("high card", () => {
 
     expect(rank.rankOrder).toEqual(13)
   })
+
 })
 
 
@@ -25,7 +26,7 @@ describe("twoPairs", () => {
     expect(rank.rankOrder).toEqual(203.02)
   });
 
-  xit("is falsey when not two pair", () => {
+  it("is falsey when not two pair", () => {
     const line = '8C TS KC 9H 4S'
     const hand = parser.parseLine(line)[0]
 

@@ -1,4 +1,5 @@
 import R from 'ramda'
+import hands from './hands'
 
 const HAND_SIZE = 5
 
@@ -26,7 +27,12 @@ const parseLine = R.compose(
   R.split(' ')
 )
 
+const getHands = () => {
+  return R.map(parseLine)(hands.split('\n'))
+}
+
 export default {
+  getHands,
   parseLine,
   getCard
 }

@@ -24,3 +24,9 @@ it('getCard creates card data with face cards', () => {
   expect(card.order).toEqual(13)
   expect(card.suit).toEqual('C')
 })
+
+
+it("getHands returns an array of hands", () => {
+  const first = parser.getHands()[0]
+  expect(first.length).toEqual(2)
+})
