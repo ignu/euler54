@@ -12,8 +12,30 @@ describe("high card", () => {
   })
 })
 
-describe('flushRanker', () => {
 
+describe("twoPairs", () => {
+  it("returns rank when a two pairs", () => {
+    const line = '2C 2C 3S 3C 9C'
+
+    const hand = parser.parseLine(line)[0]
+
+    const rank = ranker.twoPair(hand)
+
+    expect(rank).toBeTruthy()
+    expect(rank.rankOrder).toEqual(203.02)
+  });
+
+  xit("is falsey when not two pair", () => {
+    const line = '8C TS KC 9H 4S'
+    const hand = parser.parseLine(line)[0]
+
+    const rank = ranker.twoPair(hand)
+
+    expect(rank).toBeFalsy()
+  })
+})
+
+describe('flushRanker', () => {
   it("returns rank when a flush", () => {
     const line = '2C 9C 3C 5C 6C'
 

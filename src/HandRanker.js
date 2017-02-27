@@ -105,6 +105,22 @@ const getNumberRanker = (type, number) => {
   }
 }
 
+const twoPairRanker = (hand) => {
+  const groups = R.values(groupOrder(hand))
+
+  const match = R.filter(g => g.length === 2)(groups)
+
+  if (match.length != 2) return undefined
+
+  const pairValues = R.uniq(
+    R.pluck('order', R.flatten(match))
+  )
+
+  return {
+    type: 'twoPair',
+    rankOrder: getRankOrderForGroup('twoPair', pairValues)
+  }
+}
 
 const pairRanker  = getNumberRanker('pair', 2)
 const threeOfAKindRanker = getNumberRanker('threeOfAKind', 3)
@@ -120,6 +136,7 @@ const highCardRanker = (hand) => {
 export default {
   handRanks,
   highCard : highCardRanker,
+  twoPair: twoPairRanker,
   flush: flushRanker,
   pair: pairRanker,
   threeOfAKind: threeOfAKindRanker,
