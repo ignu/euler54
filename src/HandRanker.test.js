@@ -12,6 +12,29 @@ describe("high card", () => {
   })
 })
 
+describe('flushRanker', () => {
+
+  it("returns rank when a flush", () => {
+    const line = '2C 9C 3C 5C 6C'
+
+    const hand = parser.parseLine(line)[0]
+
+    const rank = ranker.flush(hand)
+
+    expect(rank).toBeTruthy()
+    expect(rank.rankOrder).toEqual(509)
+  });
+
+
+  it("is falsey when not a flush", () => {
+    const line = '8C TS KC 9H 4S'
+    const hand = parser.parseLine(line)[0]
+
+    const rank = ranker.flush(hand)
+
+    expect(rank).toBeFalsy()
+  })
+})
 
 describe("straightRanker", () => {
   it("returns rank when a straight", () => {
@@ -36,7 +59,6 @@ describe("straightRanker", () => {
   });
 })
 
-//describe("flushRanker")
 
 describe("royalFlushRanker", () => {
   xit("returns rank when there's a royal flush", () => {

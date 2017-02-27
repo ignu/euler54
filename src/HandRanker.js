@@ -42,6 +42,15 @@ const straightRanker = (hand) => {
   }
 }
 
+const flushRanker = (hand) => {
+  if(!isFlush(hand)) return undefined
+
+  return {
+    type: 'flush',
+    rankOrder: getRankOrder('flush', hand)
+  }
+}
+
 const highCardRanker = (hand) => {
   return {
     type: 'highCard',
@@ -58,6 +67,7 @@ const handCheckers = [
 export default {
   handCheckers,
   highCard : highCardRanker,
+  flush: flushRanker,
   straight: straightRanker,
   royalFlush: royalFlushRanker
 }
